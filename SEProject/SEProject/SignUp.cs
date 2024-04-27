@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using System.Linq;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace SEProject
 {
@@ -39,21 +40,17 @@ namespace SEProject
             string stafftype = textBox4.Text;
             string name = textBox5.Text;
 
-            // Validate loginId
-            if (loginId.Length >= 14 || !loginId.Any(char.IsDigit) || loginId.Count(char.IsDigit) < 2 || loginId.Length <8)
+
+            if (!Regex.IsMatch(loginId, @"^\d{6}$"))
             {
-                MessageBox.Show("Login ID must be greater than 7 and less than 14 characters and contain at least 2 numbers.");
+                MessageBox.Show("Login ID must be exactly 6 numeric digits.");
                 return;
             }
-            // Check if password and confirm password match
-           
 
-            
 
-            // Validate password
-            if (password.Length >= 15 || password.Length <8 || !password.Any(char.IsLetter) || !password.Any(char.IsDigit) || !password.Any(c => !char.IsLetterOrDigit(c)))
+            if (!Regex.IsMatch(password, @"^(?=.*[0-9])(?=.*[^a-zA-Z0-9])(?!.*\s).{7,14}$"))
             {
-                MessageBox.Show("Password must be greater than 7 and less than 15 characters long and include letters, numbers, and special characters.");
+                MessageBox.Show("Password must be between 7 to 14 characters long, and include at least one digit, one special character, and no spaces.");
                 return;
             }
 
@@ -63,7 +60,7 @@ namespace SEProject
                 return;
             }
 
-            // Validate stafftype
+           
             if (stafftype != "student" && stafftype != "teacher")
             {
                 MessageBox.Show("Staff type must be either 'student' or 'teacher'.");
